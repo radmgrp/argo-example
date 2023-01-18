@@ -1,8 +1,24 @@
 
+install argo
+
+kubectl create ns argocd
+curl -sSfL https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml | kubectl apply -n argocd -f -
 
 
+install simple-app
+argocd app create simple-app \
+    --repo https://github.com/radmgrp/argo-example.git \
+    --path simple-app \
+    --dest-server https://kubernetes.default.svc \
+    --dest-namespace argoapps
+
+argocd app sync simple-app
 
 install rollouts
 
 kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+
+TODO
+Helm for Argo
+https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
